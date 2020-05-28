@@ -3,15 +3,13 @@
 #include "MPU9250_9Axis.h"
 #include "EEPROM.h"
 #include <WiFi.h>
-#include "UDPClient.h"
-#include "ArduinoTimer.h"
+#include "AsyncUDP.h"
 
 #define EEPROMUtils
 #define SettingsUtils
 #define SerialPortHelper
 #define WiFiHelper
 #define UDPClient
-#define NetworkManager
 #define ProtocolHelper
 #define DataUtils
 
@@ -28,8 +26,6 @@ Quaternion q;
 unsigned long timing;
 unsigned long gyroDataIntervalSend = 50;
 
-ArduinoTimer SendTimer;
-
 void setup() 
 {
     Serial.begin(115200);
@@ -37,7 +33,7 @@ void setup()
 
     InitSettings();
     InitWiFi();
-    ServerStart();
+    UDPConnect();
     
     Wire.begin();
     Wire.setClock(400000);
@@ -58,12 +54,6 @@ void setup()
 
 void loop() 
 {
-    CheckForConnections();
-  
-    if (SendTimer.TimePassed_Milliseconds(400)) {
-        SendSensorValue();
-    }
-
     mpuInterrupt = false;
 
     mpuIntStatus = mpu.getIntStatus();

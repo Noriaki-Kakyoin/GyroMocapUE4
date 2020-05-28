@@ -1,5 +1,4 @@
-const uint ServerPort = 7755;
-WiFiServer Server(ServerPort);
+WiFiServer Server(ReadStringEEPROM(4).toInt());
 WiFiClient RemoteClient;
 
 void ServerStart() {

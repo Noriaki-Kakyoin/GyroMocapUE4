@@ -1,0 +1,3 @@
+[submodule "FinalQuestdependenciesstb"]
+	path = FinalQuestdependenciesstb
+	url = https://github.com/nothings/stb.git
